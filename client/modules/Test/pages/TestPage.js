@@ -14,7 +14,7 @@ const pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 2, 7, 8, 9, 9, 2, 2,
 
 const mapStateToProps = (state) => {
   return {
-    test: getAllPages(state),
+    paginatorItems: getAllPages(state),
   };
 };
 //
@@ -24,16 +24,16 @@ const mapStateToProps = (state) => {
 //   };
 // };
 
+@connect(mapStateToProps, {})
 @Paginator(
   {
     name: 'test',
-    items: pages,
+    paginatorItems: pages,
     itemsPerPage: 4,
     isLooped: false,
     shouldRenderIfEmpty: true,
   }
 )
-@connect(mapStateToProps, () => {})
 export class Test extends Component {
   constructor(props) {
     super(props);
@@ -72,10 +72,10 @@ export class Test extends Component {
     const {
       currentPageNumber, currentPageItems, pagesQuantity,
       isNextPageAvailable, isPrevPageAvailable, openNextPage,
-      openPrevPage, setFirstPage, setLastPage, isLooped, update, test,
+      openPrevPage, setFirstPage, setLastPage, isLooped, update, paginatorItems,
     } = this.props;
 
-    console.log('test', test);
+    console.log('test', paginatorItems);
     return (
       <div>
         <div>
