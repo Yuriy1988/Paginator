@@ -1,4 +1,4 @@
-# Boilerplate Client
+# Paginator lib for React
 
 preparing of pagination library for react
 
