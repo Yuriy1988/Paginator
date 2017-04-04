@@ -6,6 +6,7 @@ import { reducer as formReducer } from 'redux-form';
 
 import auth from './modules/Auth/AuthReducer';
 import app from './modules/App/AppReducer';
+import paginator from './modules/Paginator/PaginatorReducer';
 import config from './modules/Config/ConfigReducer';
 import test from './modules/Test/TestReducer';
 
@@ -13,5 +14,6 @@ export default combineReducers({
   app,
   reduxAsyncConnect,
   routing: routerReducer,
+  paginator,
   test,
 });

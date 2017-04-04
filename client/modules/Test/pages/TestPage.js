@@ -1,22 +1,119 @@
 import React, { Component, PropTypes } from 'react';
-import Paginator from '../../Paginator/App';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
+import Paginator from '../../Paginator/index';
 
-const pages = [1,2,3,4,5,6,7,8,9,1,2,3,4,5,6,2,7,8,9,9,2,2,3,34,234,2]
+const Button = styled.div`
+  width: 100px;
+  background: ${props => (props.isActive ? 'green' : 'gray')};
+  cursor: ${props => (props.isActive ? 'pointer' : 'initial')};
+`;
 
-class Test extends Component {
+const pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 2, 7, 8, 9, 9, 2, 2, 3, 34, 234, 2];
+
+// const mapStateToProps = (state) => {
+//   return {
+//     currentPageNumber: getCurrentPageNumber(state, _name),
+//   };
+// };
+//
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     name => dispatch(toLastPage(name)),
+//   };
+// };
+
+@Paginator({
+  name: 'test',
+  items: pages,
+  itemsPerPage: 4,
+  isLooped: false,
+  shouldRenderIfEmpty: true,
+})
+export class Test extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      currentPageNumber: props.currentPageNumber,
+      itemsPerPage: props.itemsPerPage
+    };
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      currentPageNumber: e.target.value,
+    });
+  }
+
+  handlePageSet = () => {
+    this.props.setPageNumber(this.state.currentPageNumber);
+  }
+
+  handleIsloopedToggle = () => {
+    console.log('!this.props.isLooped', !this.props.isLooped);
+    this.props.update({ isLooped: !this.props.isLooped });
+  }
+
+  handleItemsQuantityChange = (e) => {
+    this.setState({
+      itemsPerPage: e.target.value,
+    });
+  }
+
+  updateItemsPerPage = () => {
+    this.props.update({ itemsPerPage: this.state.itemsPerPage });
+  }
+
   render() {
-    const {currentPageNumber = [], currentPageItems, pagesQuantity} = this.props;
+    const {
+      currentPageNumber, currentPageItems, pagesQuantity,
+      isNextPageAvailable, isPrevPageAvailable, openNextPage,
+      openPrevPage, setFirstPage, setLastPage, isLooped, update,
+    } = this.props;
+    console.log(1, this.props.isLooped);
     return (
       <div>
-        {pages.map((d, i) => <div key={i}>{i}</div>)}
+        <div>
+          <div> pages: {pagesQuantity} </div>
+          <div> current Page: {currentPageNumber}</div>
+          {currentPageItems && currentPageItems.length && currentPageItems.map(i => <div key={Math.random()}>{i}</div>)}
+          <Button
+            isActive
+            onClick={setFirstPage}
+          >First</Button>
+          <Button
+            isActive={isPrevPageAvailable || isLooped}
+            onClick={openPrevPage}
+          >Prev</Button>
+          <Button
+            isActive={isNextPageAvailable || isLooped}
+            onClick={openNextPage}
+          >Next</Button>
+        </div>
+        <div>
+          <div>
+            <span>Set current page</span>
+            <input onChange={this.handleChange} />
+          </div>
+          <button onClick={this.handlePageSet}>OK</button>
+          <Button
+            isActive
+            onClick={setLastPage}
+          >Last</Button>
+
+          <div>
+            <div><span>Is looped</span><input type="checkbox" onChange={this.handleIsloopedToggle} checked={this.props.isLooped} /></div>
+            <div><span>items per page</span><input onChange={this.handleItemsQuantityChange} value={this.state.itemsPerPage} /></div>
+            <Button
+              isActive
+              onClick={this.updateItemsPerPage}
+            >updateItemsPerPage</Button>
+          </div>
+        </div>
       </div>
     );
   }
 }
 
-export default Paginator({
-  name: 'test',
-  items: pages,
-  itemsPerPage: 4,
-  shouldRenderIfEmpty: true,
-}, Test);
+export default Test;
