@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import Paginator from '../../Paginator/index';
+import { getAllPages } from '../TestReducer';
 
 const Button = styled.div`
   width: 100px;
@@ -11,11 +12,11 @@ const Button = styled.div`
 
 const pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 2, 7, 8, 9, 9, 2, 2, 3, 34, 234, 2];
 
-// const mapStateToProps = (state) => {
-//   return {
-//     currentPageNumber: getCurrentPageNumber(state, _name),
-//   };
-// };
+const mapStateToProps = (state) => {
+  return {
+    test: getAllPages(state),
+  };
+};
 //
 // const mapDispatchToProps = (dispatch) => {
 //   return {
@@ -23,13 +24,16 @@ const pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 2, 7, 8, 9, 9, 2, 2,
 //   };
 // };
 
-@Paginator({
-  name: 'test',
-  items: pages,
-  itemsPerPage: 4,
-  isLooped: false,
-  shouldRenderIfEmpty: true,
-})
+@Paginator(
+  {
+    name: 'test',
+    items: pages,
+    itemsPerPage: 4,
+    isLooped: false,
+    shouldRenderIfEmpty: true,
+  }
+)
+@connect(mapStateToProps, () => {})
 export class Test extends Component {
   constructor(props) {
     super(props);
@@ -51,7 +55,6 @@ export class Test extends Component {
   }
 
   handleIsloopedToggle = () => {
-    console.log('!this.props.isLooped', !this.props.isLooped);
     this.props.update({ isLooped: !this.props.isLooped });
   }
 
@@ -69,9 +72,10 @@ export class Test extends Component {
     const {
       currentPageNumber, currentPageItems, pagesQuantity,
       isNextPageAvailable, isPrevPageAvailable, openNextPage,
-      openPrevPage, setFirstPage, setLastPage, isLooped, update,
+      openPrevPage, setFirstPage, setLastPage, isLooped, update, test,
     } = this.props;
-    console.log(1, this.props.isLooped);
+
+    console.log('test', test);
     return (
       <div>
         <div>

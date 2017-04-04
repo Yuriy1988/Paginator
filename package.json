@@ -15,10 +15,6 @@
     "storybook": "./node_modules/.bin/start-storybook -p 9001",
     "coverage": "jest --coverage"
   },
-  "pre-commit": [
-    "lint",
-    "test"
-  ],
   "dependencies": {
     "babel-core": "^6.20.0",
     "body-parser": "^1.15.2",

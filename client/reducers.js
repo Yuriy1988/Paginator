@@ -4,10 +4,8 @@ import { reducer as reduxAsyncConnect } from 'redux-connect';
 import { loadingBarReducer } from 'react-redux-loading-bar';
 import { reducer as formReducer } from 'redux-form';
 
-import auth from './modules/Auth/AuthReducer';
 import app from './modules/App/AppReducer';
 import paginator from './modules/Paginator/PaginatorReducer';
-import config from './modules/Config/ConfigReducer';
 import test from './modules/Test/TestReducer';
 
 export default combineReducers({

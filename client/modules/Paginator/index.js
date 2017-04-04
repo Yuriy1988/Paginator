@@ -8,6 +8,7 @@ import {
 } from './PaginatorReducer';
 
 const Paginator = (options = {}) => {
+  console.log(1, arguments);
   const _name = options.name;
   return (WrappedComponent) => {
     const mapStateToProps = (state) => {
