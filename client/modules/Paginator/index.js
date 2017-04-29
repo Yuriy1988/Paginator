@@ -76,8 +76,7 @@ const Paginator = (options = {}) => {
 
       componentWillMount() {
         const { itemsPerPage = 1, isLooped = false } = options;
-        const { paginatorItems } = this.props || options;
-        console.log('paginatorItems', this.props);
+        const paginatorItems = this.props.paginatorItems || options.paginatorItems;
         const { isInitialized } = this.props;
         if (_name && !isInitialized) this.props._initializePaginator(_name, itemsPerPage, paginatorItems, isLooped);
       }
@@ -112,12 +111,12 @@ const Paginator = (options = {}) => {
         if (isLooped && !isNextPageAvailable && pagesQuantity > 1) _setFirstPage(_name);
       }
 
-      update({ name, itemsPerPage, paginatorItems, isLooped }) {
+      update = ({ name, itemsPerPage, paginatorItems, isLooped }) => {
         const { itemsPerPage: _itemsPerPage, paginatorItems: _paginatorItems, isLooped: _isLooped, _updatePaginator } = this.props;
         _updatePaginator({
           name: name || _name,
           itemsPerPage: itemsPerPage || _itemsPerPage,
-          paginatorItems: paginatorItems || _paginatorItems,
+          items: paginatorItems || _paginatorItems,
           isLooped: typeof isLooped === 'undefined' ? _isLooped : isLooped,
         });
       }

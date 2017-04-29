@@ -65,6 +65,7 @@ export class Test extends Component {
   }
 
   updateItemsPerPage = () => {
+    console.log(2,this.state.itemsPerPage);
     this.props.update({ itemsPerPage: this.state.itemsPerPage });
   }
 
@@ -75,7 +76,6 @@ export class Test extends Component {
       openPrevPage, setFirstPage, setLastPage, isLooped, update, paginatorItems,
     } = this.props;
 
-    console.log('test', paginatorItems);
     return (
       <div>
         <div>
