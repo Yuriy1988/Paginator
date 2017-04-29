@@ -22,6 +22,6 @@ const UserReducer = (state = initialState, action) => {
 };
 
 export const getProfiles = state => (state.test.profiles);
-export const getAllPages = () => ['a', 'b', 'c', 'f', 'd', 't', 'd', 'g', 'mn'];
+export const getAllPages = () => [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 2, 7, 8, 9, 9, 2, 2, 3, 34, 234, 2];
 
 export default UserReducer;

@@ -10,25 +10,17 @@ const Button = styled.div`
   cursor: ${props => (props.isActive ? 'pointer' : 'initial')};
 `;
 
-const pages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 2, 7, 8, 9, 9, 2, 2, 3, 34, 234, 2];
 
 const mapStateToProps = (state) => {
   return {
-    paginatorItems: getAllPages(state),
+    paginatorItems: getAllPages(),
   };
 };
-//
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     name => dispatch(toLastPage(name)),
-//   };
-// };
 
 @connect(mapStateToProps, {})
 @Paginator(
   {
     name: 'test',
-    paginatorItems: pages,
     itemsPerPage: 4,
     isLooped: false,
     shouldRenderIfEmpty: true,
@@ -72,9 +64,10 @@ export class Test extends Component {
   render() {
     const {
       currentPageNumber, currentPageItems, pagesQuantity,
-      isNextPageAvailable, isPrevPageAvailable, openNextPage,
+      isNextPageAvailable, isPrevPageAvailable, openNextPage, paginatorItems2,
       openPrevPage, setFirstPage, setLastPage, isLooped, update, paginatorItems,
     } = this.props;
+    console.log('paginatorItems2', paginatorItems2);
 
     return (
       <div>

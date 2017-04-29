@@ -10,8 +10,8 @@ import test from './modules/Test/TestReducer';
 
 export default combineReducers({
   app,
+  test,
   reduxAsyncConnect,
   routing: routerReducer,
   paginator,
-  test,
 });
