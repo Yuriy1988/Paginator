@@ -147,14 +147,14 @@ const PaginatorReducer = (state = initialState, action) => {
 
 const isExist = (state, name) => Boolean(state.paginator && state.paginator[name]);
 
-export const getCurrentPageNumber = (state, name) => isExist(state, name) && state.paginator[name].currentPageNumber;
-export const getIsNextPageAvailable = (state, name) => isExist(state, name) && state.paginator[name].currentPageNumber !== state.paginator[name].pagesQuantity;
-export const getIsPrevPageAvailable = (state, name) => isExist(state, name) && state.paginator[name].currentPageNumber !== 1;
-export const getPagesQuantity = (state, name) => isExist(state, name) && state.paginator[name].pagesQuantity;
-export const getCurrentPageItems = (state, name) => isExist(state, name) && state.paginator[name].currenPageItems;
 export const getIsInitialized = (state, name) => isExist(state, name);
-export const getItemsPerPage = (state, name) => isExist(state, name) && state.paginator[name].itemsPerPage;
-export const getPaginatorItems = (state, name) => isExist(state, name) && state.paginator[name].items;
 export const getIsLooped = (state, name) => isExist(state, name) && Boolean(state.paginator[name].isLooped);
+export const getIsPrevPageAvailable = (state, name) => isExist(state, name) && state.paginator[name].currentPageNumber !== 1;
+export const getIsNextPageAvailable = (state, name) => isExist(state, name) && state.paginator[name].currentPageNumber !== state.paginator[name].pagesQuantity;
+export const getCurrentPageNumber = (state, name) => (isExist(state, name) && state.paginator[name].currentPageNumber) || 1;
+export const getPagesQuantity = (state, name) => (isExist(state, name) && state.paginator[name].pagesQuantity) || 0;
+export const getCurrentPageItems = (state, name) => (isExist(state, name) && state.paginator[name].currenPageItems) || [];
+export const getItemsPerPage = (state, name) => (isExist(state, name) && state.paginator[name].itemsPerPage) || 1;
+export const getPaginatorItems = (state, name) => (isExist(state, name) && state.paginator[name].items) || [];
 
 export default PaginatorReducer;

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { initialize, update, toNextPage, toPrevPage, setPage, toFirstPage, toLastPage } from './PaginatorActions';
@@ -35,24 +36,24 @@ const Paginator = (options = {}) => {
       };
     };
     class _Paginator extends Component {
-      static propTypes = {
-        currentPageNumber: PropTypes.number.isRequired,
-        itemsPerPage: PropTypes.number.isRequired,
-        pagesQuantity: PropTypes.number.isRequired,
-        currentPageItems: PropTypes.arrayOf(PropTypes.any),
-        paginatorItems: PropTypes.arrayOf(PropTypes.any),
-        isNextPageAvailable: PropTypes.bool.isRequired,
-        isPrevPageAvailable: PropTypes.bool.isRequired,
-        isInitialized: PropTypes.bool.isRequired,
-        isLooped: PropTypes.bool.isRequired,
-        _initializePaginator: PropTypes.func.isRequired,
-        _setPageNumber: PropTypes.func.isRequired,
-        _openNextPage: PropTypes.func.isRequired,
-        _openPrevPage: PropTypes.func.isRequired,
-        _setFirstPage: PropTypes.func.isRequired,
-        _setLastPage: PropTypes.func.isRequired,
-        _updatePaginator: PropTypes.func.isRequired,
-      };
+      // static propTypes = {
+      //   currentPageNumber: PropTypes.number.isRequired,
+      //   itemsPerPage: PropTypes.number.isRequired,
+      //   pagesQuantity: PropTypes.number.isRequired,
+      //   currentPageItems: PropTypes.arrayOf(PropTypes.any),
+      //   paginatorItems: PropTypes.arrayOf(PropTypes.any),
+      //   isNextPageAvailable: PropTypes.bool.isRequired,
+      //   isPrevPageAvailable: PropTypes.bool.isRequired,
+      //   isInitialized: PropTypes.bool.isRequired,
+      //   isLooped: PropTypes.bool.isRequired,
+      //   _initializePaginator: PropTypes.func.isRequired,
+      //   _setPageNumber: PropTypes.func.isRequired,
+      //   _openNextPage: PropTypes.func.isRequired,
+      //   _openPrevPage: PropTypes.func.isRequired,
+      //   _setFirstPage: PropTypes.func.isRequired,
+      //   _setLastPage: PropTypes.func.isRequired,
+      //   _updatePaginator: PropTypes.func.isRequired,
+      // };
 
       static defaultProps = {
         currentPageNumber: 1,
