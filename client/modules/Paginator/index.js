@@ -78,7 +78,7 @@ const Paginator = (options = {}) => {
       }
 
       componentWillReceiveProps(nextProps) {
-        this.isInitializeIfNecessary(nextProps.paginatorItems);
+        this.isInitializeIfNecessary(nextProps);
       }
 
       setPageNumber = (pageNumber) => {
@@ -100,10 +100,10 @@ const Paginator = (options = {}) => {
       }
 
       isInitializeIfNecessary = (props) => {
-        if (props.paginatorItems.length) {
+        const { isInitialized } = props;
+        if (props.paginatorItems.length && !isInitialized) {
           const { itemsPerPage = 1, isLooped = false } = options;
           const paginatorItems = this.props.paginatorItems || options.paginatorItems;
-          const { isInitialized } = this.props;
           if (_name && !isInitialized) this.props._initializePaginator(_name, itemsPerPage, paginatorItems, isLooped);
         }
       }
