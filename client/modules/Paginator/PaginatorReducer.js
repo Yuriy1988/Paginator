@@ -6,7 +6,6 @@ const PaginatorReducer = (state = initialState, action) => {
   switch (action.type) {
     case INITIALIZE: {
       const { name, itemsPerPage, items, isLooped } = action.payload;
-      if (state[name]) return { ...state };
 
       const currentPageNumber = 1;
       const pagesQuantity = Math.ceil(items.length / itemsPerPage);

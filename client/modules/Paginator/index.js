@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { initialize, update, toNextPage, toPrevPage, setPage, toFirstPage, toLastPage } from './PaginatorActions';
@@ -36,24 +35,24 @@ const Paginator = (options = {}) => {
       };
     };
     class _Paginator extends Component {
-      // static propTypes = {
-      //   currentPageNumber: PropTypes.number.isRequired,
-      //   itemsPerPage: PropTypes.number.isRequired,
-      //   pagesQuantity: PropTypes.number.isRequired,
-      //   currentPageItems: PropTypes.arrayOf(PropTypes.any),
-      //   paginatorItems: PropTypes.arrayOf(PropTypes.any),
-      //   isNextPageAvailable: PropTypes.bool.isRequired,
-      //   isPrevPageAvailable: PropTypes.bool.isRequired,
-      //   isInitialized: PropTypes.bool.isRequired,
-      //   isLooped: PropTypes.bool.isRequired,
-      //   _initializePaginator: PropTypes.func.isRequired,
-      //   _setPageNumber: PropTypes.func.isRequired,
-      //   _openNextPage: PropTypes.func.isRequired,
-      //   _openPrevPage: PropTypes.func.isRequired,
-      //   _setFirstPage: PropTypes.func.isRequired,
-      //   _setLastPage: PropTypes.func.isRequired,
-      //   _updatePaginator: PropTypes.func.isRequired,
-      // };
+      static propTypes = {
+        currentPageNumber: PropTypes.number.isRequired,
+        itemsPerPage: PropTypes.number.isRequired,
+        pagesQuantity: PropTypes.number.isRequired,
+        currentPageItems: PropTypes.arrayOf(PropTypes.any),
+        paginatorItems: PropTypes.arrayOf(PropTypes.any),
+        isNextPageAvailable: PropTypes.bool.isRequired,
+        isPrevPageAvailable: PropTypes.bool.isRequired,
+        isInitialized: PropTypes.bool.isRequired,
+        isLooped: PropTypes.bool.isRequired,
+        _initializePaginator: PropTypes.func.isRequired,
+        _setPageNumber: PropTypes.func.isRequired,
+        _openNextPage: PropTypes.func.isRequired,
+        _openPrevPage: PropTypes.func.isRequired,
+        _setFirstPage: PropTypes.func.isRequired,
+        _setLastPage: PropTypes.func.isRequired,
+        _updatePaginator: PropTypes.func.isRequired,
+      };
 
       static defaultProps = {
         currentPageNumber: 1,
@@ -75,11 +74,11 @@ const Paginator = (options = {}) => {
       };
 
       componentWillMount() {
-        this.isInitializeIfNecessary(this.props);
+        this.initializeIfNecessary(this.props);
       }
 
       componentWillReceiveProps(nextProps) {
-        this.isInitializeIfNecessary(nextProps);
+        this.initializeIfNecessary(nextProps);
       }
 
       setPageNumber = (pageNumber) => {
@@ -100,11 +99,11 @@ const Paginator = (options = {}) => {
         if (pagesQuantity && currentPageNumber !== 1) _setFirstPage(_name);
       }
 
-      isInitializeIfNecessary = (props) => {
+      initializeIfNecessary = (props) => {
         const { isInitialized } = props;
-        if (props.paginatorItems.length && !isInitialized) {
+        if (!isInitialized) {
           const { itemsPerPage = 1, isLooped = false } = options;
-          const paginatorItems = this.props.paginatorItems || options.paginatorItems;
+          const paginatorItems = options.paginatorItems || this.props.paginatorItems;
           if (_name && !isInitialized) this.props._initializePaginator(_name, itemsPerPage, paginatorItems, isLooped);
         }
       }
@@ -134,10 +133,33 @@ const Paginator = (options = {}) => {
       render() {
         const {
           currentPageItems, currentPageNumber, isNextPageAvailable,
-          isPrevPageAvailable, pagesQuantity, isLooped,
+          isPrevPageAvailable, pagesQuantity, isLooped, isInitialized,
           itemsPerPage, ...restProps
         } = this.props;
         const { shouldRenderIfEmpty } = options;
+
+        let _currentPageNumber;
+        let _isLooped;
+        let _currenPageItems;
+        let _isPrevPageAvailable;
+        let _isNextPageAvailable;
+        let _pagesQuantity;
+        let _itemsPerPage;
+
+        if (!isInitialized) {
+          const { paginatorItems } = this.props;
+          _itemsPerPage = options.itemsPerPage;
+
+          _currentPageNumber = 1;
+          _pagesQuantity = Math.ceil(paginatorItems.length / _itemsPerPage);
+          const begin = (_currentPageNumber - 1) * _itemsPerPage;
+          const end = (_itemsPerPage * _currentPageNumber);
+
+          _currenPageItems = paginatorItems && paginatorItems.length && paginatorItems.slice(begin, end);
+
+          _isPrevPageAvailable = _currentPageNumber !== 1;
+          _isNextPageAvailable = _currentPageNumber !== _pagesQuantity;
+        }
 
         const shouldRender = Boolean(currentPageItems.length || shouldRenderIfEmpty);
         return (
@@ -145,18 +167,19 @@ const Paginator = (options = {}) => {
             {shouldRender &&
               <WrappedComponent
                 {...restProps}
-                currentPageNumber={currentPageNumber}
-                currentPageItems={currentPageItems}
-                isNextPageAvailable={isNextPageAvailable}
-                isPrevPageAvailable={isPrevPageAvailable}
-                pagesQuantity={pagesQuantity}
+                currentPageNumber={_currentPageNumber || currentPageNumber}
+                currentPageItems={_currenPageItems || currentPageItems}
+                isNextPageAvailable={_isNextPageAvailable || isNextPageAvailable}
+                isPrevPageAvailable={_isPrevPageAvailable || isPrevPageAvailable}
+                pagesQuantity={_pagesQuantity || pagesQuantity}
+                isLooped={isLooped || _isLooped}
+                itemsPerPage={_itemsPerPage || itemsPerPage}
+
                 setPageNumber={this.setPageNumber}
                 openNextPage={this.openNextPage}
                 openPrevPage={this.openPrevPage}
                 setFirstPage={this.setFirstPage}
                 setLastPage={this.setLastPage}
-                isLooped={isLooped}
-                itemsPerPage={itemsPerPage}
                 update={this.update}
               />}
           </div>
