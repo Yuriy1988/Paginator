@@ -1,6 +1,6 @@
 # REACT-REDUX-PAGINATOR
 
-** Lightweight library for client-side collection splitting (pagination) in declarative way**
+**Lightweight library for client-side collection splitting (pagination) in declarative way**
 
 ## Installation
 
