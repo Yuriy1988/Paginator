@@ -6,10 +6,10 @@ export const NEXT = 'REDUX-PAGINATOR/OPEN_NEXT_PAGE';
 export const PREV = 'REDUX-PAGINATOR/OPEN_PREV_PAGE';
 export const UPDATE = 'REDUX-PAGINATOR/UPDATE';
 
-export const initialize = (name, itemsPerPage, items, isLooped) => {
+export const initialize = (name, itemsPerPage, items, isLooped, shouldRenderIfEmpty, initialPage) => {
   return {
     type: INITIALIZE,
-    payload: { name, itemsPerPage, items, isLooped },
+    payload: { name, itemsPerPage, items, isLooped, shouldRenderIfEmpty, initialPage },
   };
 };
 

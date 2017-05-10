@@ -19,15 +19,8 @@ const mapStateToProps = (state) => {
 };
 
 @connect(mapStateToProps, {})
-@Paginator(
-  {
-    name: 'test',
-    itemsPerPage: 4,
-    isLooped: false,
-    shouldRenderIfEmpty: false,
-  }
-)
-class Test extends Component {
+@Paginator()
+export class Test extends Component {
   constructor(props) {
     super(props);
 
@@ -79,11 +72,11 @@ class Test extends Component {
             onClick={setFirstPage}
           >First</Button>
           <Button
-            isActive={isPrevPageAvailable}
+            isActive={isPrevPageAvailable || isLooped}
             onClick={openPrevPage}
           >Prev</Button>
           <Button
-            isActive={isNextPageAvailable}
+            isActive={isNextPageAvailable || isLooped}
             onClick={openNextPage}
           >Next</Button>
         </div>

@@ -1,35 +1,45 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { initialize, update, toNextPage, toPrevPage, setPage, toFirstPage, toLastPage } from './PaginatorActions';
+
+import {
+  initialize, update, toNextPage,
+  toPrevPage, setPage, toFirstPage,
+  toLastPage,
+} from './PaginatorActions';
 import {
   getCurrentPageNumber, getIsNextPageAvailable, getIsPrevPageAvailable,
   getPagesQuantity, getCurrentPageItems, getIsInitialized,
-  getIsLooped, getItemsPerPage,
+  getIsLooped, getItemsPerPage, getShouldRenderIfEmpty,
 } from './PaginatorReducer';
 
 const Paginator = (options = {}) => {
-  const _name = options.name;
+  let _name = options.name;
   return (WrappedComponent) => {
-    const mapStateToProps = (state) => {
+    const mapStateToProps = (state, props) => {
+      const isInitialized = Boolean(state.paginator && state.paginator[_name]);
       return {
         currentPageNumber: getCurrentPageNumber(state, _name),
+        itemsPerPage: typeof props.itemsPerPage !== 'undefined' && !isInitialized ? props.itemsPerPage : getItemsPerPage(state, _name),
         currentPageItems: getCurrentPageItems(state, _name),
+        pagesQuantity: getPagesQuantity(state, _name),
         isNextPageAvailable: getIsNextPageAvailable(state, _name),
         isPrevPageAvailable: getIsPrevPageAvailable(state, _name),
-        pagesQuantity: getPagesQuantity(state, _name),
-        isInitialized: getIsInitialized(state, _name),
-        isLooped: getIsLooped(state, _name),
-        itemsPerPage: getItemsPerPage(state, _name),
+        shouldRenderIfEmpty: typeof props.shouldRenderIfEmpty !== 'undefined' && !isInitialized ? props.shouldRenderIfEmpty : getShouldRenderIfEmpty(state, _name),
+        isLooped: typeof props.isLooped !== 'undefined' && !isInitialized ? props.isLooped : getIsLooped(state, _name),
+        _isInitialized: getIsInitialized(state, _name),
       };
     };
 
     const mapDispatchToProps = (dispatch) => {
       return {
-        _initializePaginator: (name, itemsPerPage, paginatorItems, isLooped) => dispatch(initialize(name, itemsPerPage, paginatorItems, isLooped)),
+        _initializePaginator: (name, itemsPerPage, paginatorItems, isLooped, shouldRenderIfEmpty, initialPage) => dispatch(
+          initialize(name, itemsPerPage, paginatorItems, isLooped, shouldRenderIfEmpty, initialPage)
+        ),
         _setPageNumber: (name, pageNumber) => dispatch(setPage(name, pageNumber)),
         _openNextPage: name => dispatch(toNextPage(name)),
         _openPrevPage: name => dispatch(toPrevPage(name)),
-        _updatePaginator: (name, paginatorItems) => dispatch(update(name, paginatorItems)),
+        _updatePaginator: data => dispatch(update(data)),
         _setFirstPage: name => dispatch(toFirstPage(name)),
         _setLastPage: name => dispatch(toLastPage(name)),
       };
@@ -38,13 +48,15 @@ const Paginator = (options = {}) => {
       static propTypes = {
         currentPageNumber: PropTypes.number.isRequired,
         itemsPerPage: PropTypes.number.isRequired,
-        pagesQuantity: PropTypes.number.isRequired,
         currentPageItems: PropTypes.arrayOf(PropTypes.any),
-        paginatorItems: PropTypes.arrayOf(PropTypes.any),
+        pagesQuantity: PropTypes.number.isRequired,
         isNextPageAvailable: PropTypes.bool.isRequired,
         isPrevPageAvailable: PropTypes.bool.isRequired,
-        isInitialized: PropTypes.bool.isRequired,
         isLooped: PropTypes.bool.isRequired,
+        paginatorItems: PropTypes.arrayOf(PropTypes.any),
+        shouldRenderIfEmpty: PropTypes.bool,
+        initialPage: PropTypes.number,
+        _isInitialized: PropTypes.bool.isRequired,
         _initializePaginator: PropTypes.func.isRequired,
         _setPageNumber: PropTypes.func.isRequired,
         _openNextPage: PropTypes.func.isRequired,
@@ -62,8 +74,10 @@ const Paginator = (options = {}) => {
         paginatorItems: [],
         isNextPageAvailable: false,
         isPrevPageAvailable: false,
-        isInitialized: false,
         isLooped: false,
+        _isInitialized: false,
+        shouldRenderIfEmpty: true,
+        initialPage: 1,
         _initializePaginator() {},
         _setPageNumber() {},
         _openNextPage() {},
@@ -100,11 +114,16 @@ const Paginator = (options = {}) => {
       }
 
       initializeIfNecessary = (props) => {
-        const { isInitialized } = props;
-        if (!isInitialized) {
-          const { itemsPerPage = 1, isLooped = false } = options;
-          const paginatorItems = options.paginatorItems || this.props.paginatorItems;
-          if (_name && !isInitialized) this.props._initializePaginator(_name, itemsPerPage, paginatorItems, isLooped);
+        const { _isInitialized } = props;
+        if (!_isInitialized) {
+          const paginatorItems = options.paginatorItems || props.paginatorItems;
+          const itemsPerPage = options.itemsPerPage || props.itemsPerPage || 1;
+          const isLooped = Boolean(options.isLooped || props.isLooped);
+          const initialPage = options.initialPage || props.initialPage || 1;
+          _name = options.name || props.paginatorName;
+          const shouldRenderIfEmpty = options.shouldRenderIfEmpty || this.props.shouldRenderIfEmpty;
+
+          if (_name && !_isInitialized) props._initializePaginator(_name, itemsPerPage, paginatorItems, isLooped, shouldRenderIfEmpty, initialPage);
         }
       }
 
@@ -133,46 +152,53 @@ const Paginator = (options = {}) => {
       render() {
         const {
           currentPageItems, currentPageNumber, isNextPageAvailable,
-          isPrevPageAvailable, pagesQuantity, isLooped, isInitialized,
-          itemsPerPage, ...restProps
+          isPrevPageAvailable, pagesQuantity, isLooped, _isInitialized,
+          itemsPerPage, shouldRenderIfEmpty, ...restProps
         } = this.props;
-        const { shouldRenderIfEmpty } = options;
 
         let _currentPageNumber;
         let _isLooped;
-        let _currenPageItems;
+        let _currentPageItems;
         let _isPrevPageAvailable;
         let _isNextPageAvailable;
         let _pagesQuantity;
         let _itemsPerPage;
+        let _shouldRender;
+        let _shouldRenderIfEmpty;
 
-        if (!isInitialized) {
-          const { paginatorItems } = this.props;
-          _itemsPerPage = options.itemsPerPage;
+        if (!_isInitialized) {
+          const paginatorItems = options.paginatorItems || this.props.paginatorItems;
+          const initialPage = options.initialPage || this.props.initialPage;
+          _itemsPerPage = options.itemsPerPage || itemsPerPage;
+          _isLooped = Boolean(options.isLooped) || isLooped;
+          _shouldRenderIfEmpty = options.shouldRenderIfEmpty || shouldRenderIfEmpty;
 
-          _currentPageNumber = 1;
+          _currentPageNumber = initialPage || 1;
           _pagesQuantity = Math.ceil(paginatorItems.length / _itemsPerPage);
+
           const begin = (_currentPageNumber - 1) * _itemsPerPage;
           const end = (_itemsPerPage * _currentPageNumber);
 
-          _currenPageItems = paginatorItems && paginatorItems.length && paginatorItems.slice(begin, end);
+          _currentPageItems = (paginatorItems && paginatorItems.length && paginatorItems.slice(begin, end)) || [];
 
           _isPrevPageAvailable = _currentPageNumber !== 1;
           _isNextPageAvailable = _currentPageNumber !== _pagesQuantity;
+          _shouldRender = Boolean(_currentPageItems.length || _shouldRenderIfEmpty);
+        } else {
+          _shouldRender = Boolean(currentPageItems.length || shouldRenderIfEmpty);
         }
 
-        const shouldRender = Boolean(currentPageItems.length || shouldRenderIfEmpty);
         return (
           <div>
-            {shouldRender &&
+            {_shouldRender &&
               <WrappedComponent
                 {...restProps}
                 currentPageNumber={_currentPageNumber || currentPageNumber}
-                currentPageItems={_currenPageItems || currentPageItems}
+                currentPageItems={_currentPageItems || currentPageItems}
                 isNextPageAvailable={_isNextPageAvailable || isNextPageAvailable}
                 isPrevPageAvailable={_isPrevPageAvailable || isPrevPageAvailable}
                 pagesQuantity={_pagesQuantity || pagesQuantity}
-                isLooped={isLooped || _isLooped}
+                isLooped={_isLooped || isLooped}
                 itemsPerPage={_itemsPerPage || itemsPerPage}
 
                 setPageNumber={this.setPageNumber}

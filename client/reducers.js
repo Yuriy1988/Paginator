@@ -5,7 +5,7 @@ import { loadingBarReducer } from 'react-redux-loading-bar';
 import { reducer as formReducer } from 'redux-form';
 
 import app from './modules/App/AppReducer';
-import paginator from './modules/Paginator/PaginatorReducer';
+import paginatorReducer from './modules/Paginator/PaginatorReducer';
 import test from './modules/Test/TestReducer';
 
 export default combineReducers({
@@ -13,5 +13,5 @@ export default combineReducers({
   test,
   reduxAsyncConnect,
   routing: routerReducer,
-  paginator,
+  paginatorReducer,
 });
