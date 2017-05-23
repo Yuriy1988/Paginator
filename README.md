@@ -67,8 +67,7 @@ Compatible with server-side rendering.
 
  - `name: String (required)` or `paginatorName: String (required)`
   For Redux to initialize Paginator properly.
-  Use `name` with decorator. If you want to define Paginator name dynamically with props - use paginatorName prop instead.
-  Use `paginatorName` if you want to define Paginator name dynamically with props.
+  Use `name` with decorator. If you want to define Paginator name dynamically with props - use `paginatorName` prop instead.
 
  - `itemsPerPage: Number (1 as default)`
   Defines the max number of items that are visible on the page.

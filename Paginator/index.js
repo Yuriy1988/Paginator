@@ -7,7 +7,7 @@ import {
   toPrevPage, setPage, toFirstPage,
   toLastPage,
 } from './PaginatorActions';
-import {
+import PaginatorReducer, {
   getCurrentPageNumber, getIsNextPageAvailable, getIsPrevPageAvailable,
   getPagesQuantity, getCurrentPageItems, getIsInitialized,
   getIsLooped, getItemsPerPage, getShouldRenderIfEmpty,
@@ -216,4 +216,5 @@ const Paginator = (options = {}) => {
   };
 };
 
+export { PaginatorReducer };
 export default Paginator;

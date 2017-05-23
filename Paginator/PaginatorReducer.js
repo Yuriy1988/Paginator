@@ -145,29 +145,29 @@ const PaginatorReducer = (state = initialState, action) => {
   }
 };
 
-const isExist = (state, name) => Boolean(state.paginator && state.paginator[name]);
+const isExist = (state, name) => Boolean(state.paginatorReducer && state.paginatorReducer[name]);
 
 export const getIsInitialized = (state, name) => isExist(state, name);
-export const getIsLooped = (state, name) => isExist(state, name) && Boolean(state.paginator[name].isLooped);
+export const getIsLooped = (state, name) => isExist(state, name) && Boolean(state.paginatorReducer[name].isLooped);
 export const getIsPrevPageAvailable = (state, name) => {
-  const paginator = state.paginator && state.paginator[name];
+  const paginator = state.paginatorReducer && state.paginatorReducer[name];
   return (paginator && paginator.currentPageNumber !== 1)
   ||
   (paginator && paginator.isLooped && paginator.pagesQuantity !== 1);
 };
 
 export const getIsNextPageAvailable = (state, name) => {
-  const paginator = state.paginator && state.paginator[name];
+  const paginator = state.paginatorReducer && state.paginatorReducer[name];
   return (paginator && paginator.currentPageNumber !== paginator.pagesQuantity)
   ||
   (paginator && paginator.isLooped && paginator.pagesQuantity !== 1);
 };
 
-export const getCurrentPageNumber = (state, name) => (isExist(state, name) && state.paginator[name].currentPageNumber) || 1;
-export const getPagesQuantity = (state, name) => (isExist(state, name) && state.paginator[name].pagesQuantity) || 0;
-export const getCurrentPageItems = (state, name) => (isExist(state, name) && state.paginator[name].currenPageItems) || [];
-export const getItemsPerPage = (state, name) => (isExist(state, name) && state.paginator[name].itemsPerPage) || 1;
-export const getPaginatorItems = (state, name) => (isExist(state, name) && state.paginator[name].items) || [];
-export const getShouldRenderIfEmpty = (state, name) => Boolean((isExist(state, name) && state.paginator[name].shouldRenderIfEmpty));
+export const getCurrentPageNumber = (state, name) => (isExist(state, name) && state.paginatorReducer[name].currentPageNumber) || 1;
+export const getPagesQuantity = (state, name) => (isExist(state, name) && state.paginatorReducer[name].pagesQuantity) || 0;
+export const getCurrentPageItems = (state, name) => (isExist(state, name) && state.paginatorReducer[name].currenPageItems) || [];
+export const getItemsPerPage = (state, name) => (isExist(state, name) && state.paginatorReducer[name].itemsPerPage) || 1;
+export const getPaginatorItems = (state, name) => (isExist(state, name) && state.paginatorReducer[name].items) || [];
+export const getShouldRenderIfEmpty = (state, name) => Boolean((isExist(state, name) && state.paginatorReducer[name].shouldRenderIfEmpty));
 
 export default PaginatorReducer;
