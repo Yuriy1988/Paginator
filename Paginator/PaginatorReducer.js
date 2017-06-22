@@ -11,7 +11,7 @@ const PaginatorReducer = (state = initialState, action) => {
       const pagesQuantity = Math.ceil(items.length / itemsPerPage);
       const begin = (currentPageNumber - 1) * itemsPerPage;
       const end = (itemsPerPage * currentPageNumber);
-      const currenPageItems = items && items.length && items.slice(begin, end);
+      const currentPageItems = items && items.length && items.slice(begin, end);
 
       return {
         ...state,
@@ -19,7 +19,7 @@ const PaginatorReducer = (state = initialState, action) => {
           itemsPerPage,
           pagesQuantity,
           currentPageNumber,
-          currenPageItems,
+          currentPageItems,
           items,
           isLooped,
           shouldRenderIfEmpty,
@@ -32,14 +32,14 @@ const PaginatorReducer = (state = initialState, action) => {
       const { itemsPerPage, items } = state[name];
       const begin = (pageNumber - 1) * itemsPerPage;
       const end = (itemsPerPage * pageNumber);
-      const currenPageItems = items && items.length && items.slice(begin, end);
+      const currentPageItems = items && items.length && items.slice(begin, end);
 
       return {
         ...state,
         [name]: {
           ...state[name],
           currentPageNumber: pageNumber,
-          currenPageItems,
+          currentPageItems,
         },
       };
     }
@@ -48,15 +48,14 @@ const PaginatorReducer = (state = initialState, action) => {
       const { name } = action.payload;
       const { itemsPerPage, items } = state[name];
       const begin = 0;
-      const end = itemsPerPage;
-      const currenPageItems = items && items.length && items.slice(begin, end);
+      const currentPageItems = items && items.length && items.slice(begin, itemsPerPage);
 
       return {
         ...state,
         [name]: {
           ...state[name],
           currentPageNumber: 1,
-          currenPageItems,
+          currentPageItems,
         },
       };
     }
@@ -66,14 +65,14 @@ const PaginatorReducer = (state = initialState, action) => {
       const { itemsPerPage, items, pagesQuantity } = state[name];
       const begin = (pagesQuantity - 1) * itemsPerPage;
       const end = (itemsPerPage * pagesQuantity);
-      const currenPageItems = items && items.length && items.slice(begin, end);
+      const currentPageItems = items && items.length && items.slice(begin, end);
 
       return {
         ...state,
         [name]: {
           ...state[name],
           currentPageNumber: pagesQuantity,
-          currenPageItems,
+          currentPageItems,
         },
       };
     }
@@ -84,14 +83,14 @@ const PaginatorReducer = (state = initialState, action) => {
       const pageNumber = currentPageNumber + 1;
       const begin = (pageNumber - 1) * itemsPerPage;
       const end = (itemsPerPage * pageNumber);
-      const currenPageItems = items && items.length && items.slice(begin, end);
+      const currentPageItems = items && items.length && items.slice(begin, end);
 
       return {
         ...state,
         [name]: {
           ...state[name],
           currentPageNumber: pageNumber,
-          currenPageItems,
+          currentPageItems,
         },
       };
     }
@@ -102,14 +101,14 @@ const PaginatorReducer = (state = initialState, action) => {
       const pageNumber = currentPageNumber - 1;
       const begin = (pageNumber - 1) * itemsPerPage;
       const end = (itemsPerPage * pageNumber);
-      const currenPageItems = items && items.length && items.slice(begin, end);
+      const currentPageItems = items && items.length && items.slice(begin, end);
 
       return {
         ...state,
         [name]: {
           ...state[name],
           currentPageNumber: pageNumber,
-          currenPageItems,
+          currentPageItems,
         },
       };
     }
@@ -123,7 +122,7 @@ const PaginatorReducer = (state = initialState, action) => {
       if (currentPageNumber > pagesQuantity) currentPageNumber = 1;
       const begin = (currentPageNumber - 1) * itemsPerPage;
       const end = (itemsPerPage * currentPageNumber);
-      const currenPageItems = items && items.length && items.slice(begin, end);
+      const currentPageItems = items && items.length && items.slice(begin, end);
 
       return {
         ...state,
@@ -133,7 +132,7 @@ const PaginatorReducer = (state = initialState, action) => {
           items,
           isLooped,
           currentPageNumber,
-          currenPageItems,
+          currentPageItems,
           pagesQuantity,
         },
       };
@@ -165,7 +164,7 @@ export const getIsNextPageAvailable = (state, name) => {
 
 export const getCurrentPageNumber = (state, name) => (isExist(state, name) && state.paginatorReducer[name].currentPageNumber) || 1;
 export const getPagesQuantity = (state, name) => (isExist(state, name) && state.paginatorReducer[name].pagesQuantity) || 0;
-export const getCurrentPageItems = (state, name) => (isExist(state, name) && state.paginatorReducer[name].currenPageItems) || [];
+export const getCurrentPageItems = (state, name) => (isExist(state, name) && state.paginatorReducer[name].currentPageItems) || [];
 export const getItemsPerPage = (state, name) => (isExist(state, name) && state.paginatorReducer[name].itemsPerPage) || 1;
 export const getPaginatorItems = (state, name) => (isExist(state, name) && state.paginatorReducer[name].items) || [];
 export const getShouldRenderIfEmpty = (state, name) => Boolean((isExist(state, name) && state.paginatorReducer[name].shouldRenderIfEmpty));

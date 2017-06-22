@@ -7,6 +7,7 @@ import {
   toPrevPage, setPage, toFirstPage,
   toLastPage,
 } from './PaginatorActions';
+
 import PaginatorReducer, {
   getCurrentPageNumber, getIsNextPageAvailable, getIsPrevPageAvailable,
   getPagesQuantity, getCurrentPageItems, getIsInitialized,
