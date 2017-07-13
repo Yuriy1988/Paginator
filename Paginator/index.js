@@ -192,23 +192,23 @@ const Paginator = (options = {}) => {
         return (
           <div>
             {_shouldRender &&
-              <WrappedComponent
-                {...restProps}
-                currentPageNumber={_currentPageNumber || currentPageNumber}
-                currentPageItems={_currentPageItems || currentPageItems}
-                isNextPageAvailable={_isNextPageAvailable || isNextPageAvailable}
-                isPrevPageAvailable={_isPrevPageAvailable || isPrevPageAvailable}
-                pagesQuantity={_pagesQuantity || pagesQuantity}
-                isLooped={_isLooped || isLooped}
-                itemsPerPage={_itemsPerPage || itemsPerPage}
+            <WrappedComponent
+              {...restProps}
+              currentPageNumber={_currentPageNumber || currentPageNumber}
+              currentPageItems={_currentPageItems || currentPageItems}
+              isNextPageAvailable={_isNextPageAvailable || isNextPageAvailable}
+              isPrevPageAvailable={_isPrevPageAvailable || isPrevPageAvailable}
+              pagesQuantity={_pagesQuantity || pagesQuantity}
+              isLooped={_isLooped || isLooped}
+              itemsPerPage={_itemsPerPage || itemsPerPage}
 
-                setPageNumber={this.setPageNumber}
-                openNextPage={this.openNextPage}
-                openPrevPage={this.openPrevPage}
-                setFirstPage={this.setFirstPage}
-                setLastPage={this.setLastPage}
-                update={this.update}
-              />}
+              setPageNumber={this.setPageNumber}
+              openNextPage={this.openNextPage}
+              openPrevPage={this.openPrevPage}
+              setFirstPage={this.setFirstPage}
+              setLastPage={this.setLastPage}
+              update={this.update}
+            />}
           </div>
         );
       }
@@ -217,5 +217,9 @@ const Paginator = (options = {}) => {
   };
 };
 
-export { PaginatorReducer };
+export { PaginatorReducer, getCurrentPageNumber,
+  getIsNextPageAvailable, getIsPrevPageAvailable,
+  getPagesQuantity, getCurrentPageItems, getIsInitialized,
+  getIsLooped, getItemsPerPage, getShouldRenderIfEmpty,
+};
 export default Paginator;

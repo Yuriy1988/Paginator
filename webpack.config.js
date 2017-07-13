@@ -1,26 +1,40 @@
 var webpack = require('webpack');
-var ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
-var Visualizer  = require('webpack-visualizer-plugin');
 var path = require('path');
+var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
-  entry: {
-    app: [
-      './Paginator/index.js',
-    ]
-  },
+    entry: {
+        app: [
+            './Paginator/index.js',
+        ]
+    },
 
-  output: {
-    path: __dirname + '/lib/',
-    filename: '[name].js',
-    publicPath: '/',
-  },
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                    exclude: /(node_modules)/,
+                    use: {
+                        loader: 'babel-loader'
+                }
+            }
+        ]
+    },
 
-  resolve: {
-    extensions: ['.js'],
-    modules: [
-      'client',
-      'node_modules',
+    output: {
+        path: __dirname + '/lib/',
+        filename: 'index.js',
+        publicPath: '/',
+    },
+
+    resolve: {
+        extensions: ['.js'],
+        modules: [
+            'client',
+            'node_modules',
+        ]
+    }
+    ,plugins: [
+        new UglifyJSPlugin()
     ]
-  }
 };

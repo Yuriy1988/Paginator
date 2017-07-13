@@ -151,15 +151,15 @@ export const getIsLooped = (state, name) => isExist(state, name) && Boolean(stat
 export const getIsPrevPageAvailable = (state, name) => {
   const paginator = state.paginatorReducer && state.paginatorReducer[name];
   return (paginator && paginator.currentPageNumber !== 1)
-  ||
-  (paginator && paginator.isLooped && paginator.pagesQuantity !== 1);
+    ||
+    (paginator && paginator.isLooped && paginator.pagesQuantity !== 1);
 };
 
 export const getIsNextPageAvailable = (state, name) => {
   const paginator = state.paginatorReducer && state.paginatorReducer[name];
   return (paginator && paginator.currentPageNumber !== paginator.pagesQuantity)
-  ||
-  (paginator && paginator.isLooped && paginator.pagesQuantity !== 1);
+    ||
+    (paginator && paginator.isLooped && paginator.pagesQuantity !== 1);
 };
 
 export const getCurrentPageNumber = (state, name) => (isExist(state, name) && state.paginatorReducer[name].currentPageNumber) || 1;
