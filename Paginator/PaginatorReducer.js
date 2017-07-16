@@ -2,7 +2,7 @@ import { INITIALIZE, SET, NEXT, PREV, UPDATE, SET_FIRST, SET_LAST } from './Pagi
 
 const initialState = {};
 
-const PaginatorReducer = (state = initialState, action) => {
+const paginatorReducer = (state = initialState, action) => {
   switch (action.type) {
     case INITIALIZE: {
       const { name, itemsPerPage, items, isLooped, shouldRenderIfEmpty, initialPage } = action.payload;
@@ -11,7 +11,7 @@ const PaginatorReducer = (state = initialState, action) => {
       const pagesQuantity = Math.ceil(items.length / itemsPerPage);
       const begin = (currentPageNumber - 1) * itemsPerPage;
       const end = (itemsPerPage * currentPageNumber);
-      const currentPageItems = items && items.length && items.slice(begin, end);
+      const currenPageItems = items && items.length && items.slice(begin, end);
 
       return {
         ...state,
@@ -19,7 +19,7 @@ const PaginatorReducer = (state = initialState, action) => {
           itemsPerPage,
           pagesQuantity,
           currentPageNumber,
-          currentPageItems,
+          currenPageItems,
           items,
           isLooped,
           shouldRenderIfEmpty,
@@ -32,14 +32,14 @@ const PaginatorReducer = (state = initialState, action) => {
       const { itemsPerPage, items } = state[name];
       const begin = (pageNumber - 1) * itemsPerPage;
       const end = (itemsPerPage * pageNumber);
-      const currentPageItems = items && items.length && items.slice(begin, end);
+      const currenPageItems = items && items.length && items.slice(begin, end);
 
       return {
         ...state,
         [name]: {
           ...state[name],
           currentPageNumber: pageNumber,
-          currentPageItems,
+          currenPageItems,
         },
       };
     }
@@ -48,14 +48,15 @@ const PaginatorReducer = (state = initialState, action) => {
       const { name } = action.payload;
       const { itemsPerPage, items } = state[name];
       const begin = 0;
-      const currentPageItems = items && items.length && items.slice(begin, itemsPerPage);
+      const end = itemsPerPage;
+      const currenPageItems = items && items.length && items.slice(begin, end);
 
       return {
         ...state,
         [name]: {
           ...state[name],
           currentPageNumber: 1,
-          currentPageItems,
+          currenPageItems,
         },
       };
     }
@@ -65,14 +66,14 @@ const PaginatorReducer = (state = initialState, action) => {
       const { itemsPerPage, items, pagesQuantity } = state[name];
       const begin = (pagesQuantity - 1) * itemsPerPage;
       const end = (itemsPerPage * pagesQuantity);
-      const currentPageItems = items && items.length && items.slice(begin, end);
+      const currenPageItems = items && items.length && items.slice(begin, end);
 
       return {
         ...state,
         [name]: {
           ...state[name],
           currentPageNumber: pagesQuantity,
-          currentPageItems,
+          currenPageItems,
         },
       };
     }
@@ -83,14 +84,14 @@ const PaginatorReducer = (state = initialState, action) => {
       const pageNumber = currentPageNumber + 1;
       const begin = (pageNumber - 1) * itemsPerPage;
       const end = (itemsPerPage * pageNumber);
-      const currentPageItems = items && items.length && items.slice(begin, end);
+      const currenPageItems = items && items.length && items.slice(begin, end);
 
       return {
         ...state,
         [name]: {
           ...state[name],
           currentPageNumber: pageNumber,
-          currentPageItems,
+          currenPageItems,
         },
       };
     }
@@ -101,14 +102,14 @@ const PaginatorReducer = (state = initialState, action) => {
       const pageNumber = currentPageNumber - 1;
       const begin = (pageNumber - 1) * itemsPerPage;
       const end = (itemsPerPage * pageNumber);
-      const currentPageItems = items && items.length && items.slice(begin, end);
+      const currenPageItems = items && items.length && items.slice(begin, end);
 
       return {
         ...state,
         [name]: {
           ...state[name],
           currentPageNumber: pageNumber,
-          currentPageItems,
+          currenPageItems,
         },
       };
     }
@@ -122,7 +123,7 @@ const PaginatorReducer = (state = initialState, action) => {
       if (currentPageNumber > pagesQuantity) currentPageNumber = 1;
       const begin = (currentPageNumber - 1) * itemsPerPage;
       const end = (itemsPerPage * currentPageNumber);
-      const currentPageItems = items && items.length && items.slice(begin, end);
+      const currenPageItems = items && items.length && items.slice(begin, end);
 
       return {
         ...state,
@@ -132,7 +133,7 @@ const PaginatorReducer = (state = initialState, action) => {
           items,
           isLooped,
           currentPageNumber,
-          currentPageItems,
+          currenPageItems,
           pagesQuantity,
         },
       };
@@ -162,11 +163,21 @@ export const getIsNextPageAvailable = (state, name) => {
     (paginator && paginator.isLooped && paginator.pagesQuantity !== 1);
 };
 
+export const getIsFirstPage = (state, name) => {
+  const paginator = state.paginatorReducer && state.paginatorReducer[name];
+  return paginator && paginator.currentPageNumber === 1;
+};
+
+export const getIsLastPage = (state, name) => {
+  const paginator = state.paginatorReducer && state.paginatorReducer[name];
+  return paginator && paginator.currentPageNumber === paginator.pagesQuantity;
+};
+
 export const getCurrentPageNumber = (state, name) => (isExist(state, name) && state.paginatorReducer[name].currentPageNumber) || 1;
 export const getPagesQuantity = (state, name) => (isExist(state, name) && state.paginatorReducer[name].pagesQuantity) || 0;
-export const getCurrentPageItems = (state, name) => (isExist(state, name) && state.paginatorReducer[name].currentPageItems) || [];
+export const getCurrentPageItems = (state, name) => (isExist(state, name) && state.paginatorReducer[name].currenPageItems) || [];
 export const getItemsPerPage = (state, name) => (isExist(state, name) && state.paginatorReducer[name].itemsPerPage) || 1;
 export const getPaginatorItems = (state, name) => (isExist(state, name) && state.paginatorReducer[name].items) || [];
 export const getShouldRenderIfEmpty = (state, name) => Boolean((isExist(state, name) && state.paginatorReducer[name].shouldRenderIfEmpty));
 
-export default PaginatorReducer;
+export default paginatorReducer;

@@ -9,7 +9,7 @@ or
 `$ yarn react-redux-paginator`
 
 ## Implementation Guide
-You have to give the react-redux-paginator reducer to Redux.
+You have to give the paginatorReducer to Redux.
 
 ```
 import { createStore, combineReducers } from 'redux'
