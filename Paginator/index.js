@@ -60,6 +60,7 @@ const Paginator = (options = {}) => {
         isPrevPageAvailable: PropTypes.bool.isRequired,
         isLooped: PropTypes.bool.isRequired,
         paginatorItems: PropTypes.arrayOf(PropTypes.any),
+        dynamicNameWith: PropTypes.string,
         shouldRenderIfEmpty: PropTypes.bool,
         isFirstPage: PropTypes.bool,
         isLastPage: PropTypes.bool,
@@ -135,7 +136,7 @@ const Paginator = (options = {}) => {
           const isLooped = Boolean(options.isLooped || props.isLooped);
           const initialPage = options.initialPage || props.initialPage || 1;
           _name = options.name || props.name;
-          if (options.dynamicNameWith) {
+          if (options.dynamicNameWith || props.dynamicNameWith) {
             const dynamicKey = options.dynamicNameWith;
             _name = options.name
               ? `${options.name}_${props[dynamicKey]}`
