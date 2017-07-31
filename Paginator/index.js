@@ -20,6 +20,13 @@ const Paginator = (options = {}) => {
   const _collectionName = options.collectionName;
   return (WrappedComponent) => {
     const mapStateToProps = (state, props) => {
+      const dynamicKey = props.dynamicNameWith || options.dynamicNameWith;
+      if (props[dynamicKey]) {
+        _name = options.name
+          ? `${options.name}_${props[dynamicKey]}`
+          : `${props.name}_${props[dynamicKey]}`;
+      }
+
       const isInitialized = Boolean(state.paginator && state.paginator[_name]);
       return {
         currentPageNumber: getCurrentPageNumber(state, _name),
