@@ -35,20 +35,18 @@ const mapStateToProps = (state) => {
 };
 
 @connect(mapStateToProps, {})
-@Paginator(
-  {
-    name: 'Entities',
-    collectionName: 'entities',
-    itemsPerPage: 4,
-    isLooped: true,
-    shouldRenderIfEmpty: false,
-    initialPage: 3,
-  }
-)
+@Paginator({
+  name: 'Entities',
+  collectionName: 'entities',
+  itemsPerPage: 4,
+  isLooped: true,
+  shouldRenderIfEmpty: false,
+  initialPage: 3,
+})
 export class WrappedComponent extends React.Component {
 
   render() {
-    const paginator = this.props;
+    const { paginator } = this.props;
     
     const {
       currentPageItems, currentPageNumber, isNextPageAvailable, isPrevPageAvailable,
